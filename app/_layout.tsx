@@ -1,13 +1,12 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer'
-
+import { client } from '@/api/query-client';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -52,23 +51,26 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-     <Drawer>
-        <Drawer.Screen
-          name="index" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: 'Home',
-            title: 'overview',
-          }}
-        />
-        <Drawer.Screen
-          name="modal" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: 'User',
-            title: 'overview',
-          }}
-        />
-      </Drawer>
-    </ThemeProvider>
+    <QueryClientProvider client={client}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Drawer>
+          <Drawer.Screen
+            name="index" // This is the name of the page and must match the url from root
+            options={{
+              drawerLabel: 'Home',
+              title: 'overview',
+            }}
+          />
+          <Drawer.Screen
+            name="modal" // This is the name of the page and must match the url from root
+            options={{
+              drawerLabel: 'User',
+              title: 'overview',
+            }}
+          />
+        </Drawer>
+      </ThemeProvider>
+    </QueryClientProvider>
+
   );
 }

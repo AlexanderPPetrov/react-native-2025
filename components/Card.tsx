@@ -1,12 +1,14 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+
 type Props = {
-    children: React.ReactNode
+    children: React.ReactNode,
+    style: StyleProp<ViewStyle>
 }
-function Card({ children }: Props) {
+function Card({ children, style }: Props) {
     return <LinearGradient
                 colors={['#fff', '#efefef']}
-                style={styles.gradient}>
+                style={[styles.gradient, style]}>
                     <View style={styles.card}>
                         { children }
                     </View>

@@ -1,45 +1,44 @@
-import { StyleSheet, View, Text } from 'react-native';
-import Entypo from '@expo/vector-icons/Entypo';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Feather from '@expo/vector-icons/Feather';
-import Card from '@/components/Card';
-
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
 // import { Text, View } from '@/components/Themed';
-
+import { searchMovie } from '@/api/movies';
+import MovieItem from '@/components/MovieItem';
 export default function HomeScreen() {
+
+  //TODO add example for i18n
+  //TODO provide custom drawer component
+  //TODO provide an example for Reusable Button component
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['searchmovie'],
+    queryFn: () => searchMovie('The Witcher')
+  })
+
+  const movies = data?.data?.results ?? []
+
+  const getMovies = () => {
+    return movies.map((movie) => {
+      return <MovieItem style={styles.movieItem}
+                        key={movie.id} 
+                        movie={movie}/>
+    })
+  }
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.row}>
-        <View style={styles.col}>
-         <Card>
-          <Text style={styles.hello}>
-            Hellow World
-          </Text>
-         </Card>
-        </View>
-        <View style={styles.col}>
-          <Card>
-            <Entypo name="user" size={24} color="black" />
-          </Card>
-        </View>
+         { getMovies()}
       </View>
-      <View style={styles.row}>
-        <View style={styles.col}>
-          <Card>
-            <MaterialIcons name="devices" size={24} color="black" />
-          </Card>
-        </View>
-        <View style={styles.col}>
-          <Card>
-            <Feather name="calendar" size={24} color="black" />
-          </Card>
-        </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  movieItem: { 
+    width: '46%', 
+    height: 260, 
+    margin: '2%',
+  },
   container: {
     flex: 1,
     paddingHorizontal: 12,
@@ -48,6 +47,7 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   col: {
     flex: 1,
