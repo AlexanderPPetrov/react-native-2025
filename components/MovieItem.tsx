@@ -1,6 +1,6 @@
 import { Movie } from "@/types"
 import { Text, StyleProp, ViewStyle } from "react-native"
-import Card from "./Card"
+import Card from "./ui/Card"
 import { Image } from "expo-image"
 import { posterBaseUrl } from "@/api/constants"
 

@@ -11,6 +11,7 @@ import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import { resources } from '@/translations';
 import { getLocales } from 'expo-localization';
+import AppDrawer from '@/components/AppDrawer';
 
 const lng = getLocales()?.[0]?.languageCode || 'en'
 
@@ -64,27 +65,51 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+export type DrawerScreen = {
+  name: string
+  options: {
+    drawerLabel: string
+    title: string
+  }
+}
+
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation()
+
+  const drawerScreens: DrawerScreen[] = [
+    {
+      name: "index",
+      options: {
+        drawerLabel: t('home'),
+        title: t('home'),
+      }
+    },
+    {
+      name: 'profile',
+      options: {
+        drawerLabel: t('user'),
+        title: t('user'),
+      }
+    }
+  ]
+
+  function getDrawerScreens() {
+    return drawerScreens.map(({name, options}) => {
+      return <Drawer.Screen
+          key={name}
+          name={name}
+          options={options}
+        />
+    })
+  }
+
+
   return (
     <QueryClientProvider client={client}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Drawer>
-          <Drawer.Screen
-            name="index" // This is the name of the page and must match the url from root
-            options={{
-              drawerLabel: t('home'),
-              title: 'overview',
-            }}
-          />
-          <Drawer.Screen
-            name="modal" // This is the name of the page and must match the url from root
-            options={{
-              drawerLabel: 'User',
-              title: 'overview',
-            }}
-          />
+        <Drawer drawerContent={()=> <AppDrawer drawerScreens={drawerScreens}/>}>
+            { getDrawerScreens()}
         </Drawer>
       </ThemeProvider>
     </QueryClientProvider>
