@@ -6,8 +6,8 @@ import MovieItem from '@/components/MovieItem';
 export default function HomeScreen() {
 
   //TODO add example for i18n
-  //TODO provide custom drawer component
   //TODO provide an example for Reusable Button component
+  //TODO provide custom drawer component
 
   const { data, isLoading } = useQuery({
     queryKey: ['searchmovie'],

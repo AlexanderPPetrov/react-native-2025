@@ -7,6 +7,23 @@ import 'react-native-reanimated';
 import { Drawer } from 'expo-router/drawer'
 import { client } from '@/api/query-client';
 import { QueryClientProvider } from '@tanstack/react-query';
+import i18n from "i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+import { resources } from '@/translations';
+import { getLocales } from 'expo-localization';
+
+const lng = getLocales()?.[0]?.languageCode || 'en'
+
+i18n
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .init({
+    resources,
+    lng,
+    fallbackLng: "en",
+    interpolation: {
+      escapeValue: false // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    }
+  });
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -49,7 +66,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
+  const { t } = useTranslation()
   return (
     <QueryClientProvider client={client}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -57,7 +74,7 @@ function RootLayoutNav() {
           <Drawer.Screen
             name="index" // This is the name of the page and must match the url from root
             options={{
-              drawerLabel: 'Home',
+              drawerLabel: t('home'),
               title: 'overview',
             }}
           />
