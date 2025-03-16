@@ -3,6 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 // import { Text, View } from '@/components/Themed';
 import { searchMovie } from '@/api/movies';
 import MovieItem from '@/components/MovieItem';
+import AppButton from '@/components/ui/AppButton';
+import Colors from '@/constants/Colors';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 export default function HomeScreen() {
 
   //TODO add example for i18n
@@ -26,6 +30,24 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
+
+      <AppButton title='Проба 1' 
+                 variant='secondary'
+                 textStyle={{fontWeight: 700}}
+                 buttonStyle={{ maxWidth: 120 }}
+                 onPress={() => {console.log('pressed')}}/>
+
+      <AppButton gradient={[Colors.light.primary, Colors.light.primaryGradient]} 
+                 title='Проба 2' 
+                 buttonStyle={{marginTop: 5, maxWidth: 200}}
+                 onPress={() => {console.log('pressed')}}/>
+
+      <AppButton icon={<AntDesign name="caretright" size={14} color="white" />}
+                 title='Проба 1' 
+                 gradient={[Colors.light.secondaryGradient, Colors.light.secondary]}
+                 buttonStyle={{marginTop: 5, maxWidth: 300}}
+                 onPress={() => {console.log('pressed')}}/>
+
       <View style={styles.row}>
          { getMovies()}
       </View>
